@@ -1,5 +1,4 @@
 import java.math.BigInteger
-import java.security.MessageDigest
 import kotlin.io.path.Path
 import kotlin.io.path.readLines
 
@@ -8,6 +7,22 @@ fun readInput(name: String) = Path("src/$name.txt").readLines()
 
 /** The cleaner shorthand for printing output. */
 fun Any?.println() = println(this)
+
+/** The 4 2-D directions with the change in row, column coordinates. */
+enum class Direction(val delta: Pair<Int, Int>) {
+  LEFT(Pair(0, -1)),
+  RIGHT(Pair(0, 1)),
+  UP(Pair(-1, 0)),
+  DOWN(Pair(1, 0));
+
+  fun reverse() =
+    when (this) {
+      LEFT -> RIGHT
+      RIGHT -> LEFT
+      UP -> DOWN
+      DOWN -> UP
+    }
+}
 
 // Fancy math.
 object MathUtils {

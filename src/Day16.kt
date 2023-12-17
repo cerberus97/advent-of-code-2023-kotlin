@@ -1,15 +1,8 @@
-import Direct.DOWN
-import Direct.LEFT
-import Direct.RIGHT
-import Direct.UP
+import Direction.DOWN
+import Direction.LEFT
+import Direction.RIGHT
+import Direction.UP
 import kotlin.math.max
-
-private enum class Direct(val delta: Pair<Int, Int>) {
-  LEFT(Pair(0, -1)),
-  RIGHT(Pair(0, 1)),
-  UP(Pair(-1, 0)),
-  DOWN(Pair(1, 0)),
-}
 
 fun main() {
   val mirrorDirs =
@@ -36,9 +29,9 @@ fun main() {
         mapOf(LEFT to listOf(UP), RIGHT to listOf(DOWN), UP to listOf(LEFT), DOWN to listOf(RIGHT)),
     )
 
-  data class State(val i: Int, val j: Int, val dir: Direct)
+  data class State(val i: Int, val j: Int, val dir: Direction)
 
-  fun State.go(dir: Direct) = State(i + dir.delta.first, j + dir.delta.second, dir)
+  fun State.go(dir: Direction) = State(i + dir.delta.first, j + dir.delta.second, dir)
 
   fun List<String>.dfs(state: State, seen: MutableSet<State>) {
     if (state in seen || state.i !in indices || state.j !in this[0].indices) {

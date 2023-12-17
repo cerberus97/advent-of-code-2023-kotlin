@@ -3,13 +3,6 @@ import Direction.LEFT
 import Direction.RIGHT
 import Direction.UP
 
-private enum class Direction(val delta: Pair<Int, Int>) {
-  LEFT(Pair(0, -1)),
-  RIGHT(Pair(0, 1)),
-  UP(Pair(-1, 0)),
-  DOWN(Pair(1, 0)),
-}
-
 fun main() {
   val pipeDirs =
     mapOf(
@@ -21,14 +14,6 @@ fun main() {
       'F' to setOf(RIGHT, DOWN),
       '.' to emptySet(),
     )
-
-  fun Direction.reverse() =
-    when (this) {
-      LEFT -> RIGHT
-      RIGHT -> LEFT
-      UP -> DOWN
-      DOWN -> UP
-    }
 
   fun go(i: Int, j: Int, dir: Direction) = Pair(i + dir.delta.first, j + dir.delta.second)
 
