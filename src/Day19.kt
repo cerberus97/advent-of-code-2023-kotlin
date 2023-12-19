@@ -12,7 +12,7 @@ fun main() {
       id = substringBefore('{'),
       rules =
         substringAfter('{').substringBefore('}').split(',').map { ruleString ->
-          if (ruleString.any { it in "<>=" }) {
+          if (ruleString.any { it in "<>" }) {
             Rule(
               cat = ruleString[0],
               op = ruleString[1],
@@ -38,7 +38,6 @@ fun main() {
     return when (op) {
       '<' -> (lval < rval)
       '>' -> (lval > rval)
-      '=' -> (lval == rval)
       else -> throw Exception("Illegal operator $op")
     }
   }
@@ -84,25 +83,17 @@ fun main() {
     }
     for (rule in workflows[cur]!!.rules) {
       val range = partRange.ratingRange[rule.cat]!!
-      val (matched, allNotMatched) =
+      val (matched, notMatched) =
         when (rule.op) {
           '>' ->
             Pair(
               IntRange(max(range.first, rule.rval + 1), range.last),
-              listOf(IntRange(range.first, min(range.last, rule.rval)))
+              IntRange(range.first, min(range.last, rule.rval))
             )
           '<' ->
             Pair(
               IntRange(range.first, min(range.last, rule.rval - 1)),
-              listOf(IntRange(max(range.first, rule.rval), range.last))
-            )
-          '=' ->
-            Pair(
-              IntRange(max(range.first, rule.rval), min(range.last, rule.rval)),
-              listOf(
-                IntRange(range.first, min(range.last, rule.rval - 1)),
-                IntRange(max(range.first, rule.rval + 1), range.last)
-              )
+              IntRange(max(range.first, rule.rval), range.last)
             )
           else -> throw Exception("Invalid operator ${rule.op}")
         }
@@ -113,9 +104,7 @@ fun main() {
         return countAccepted(rule.dest, workflows, partRange)
       }
       return countAccepted(rule.dest, workflows, partRange.updateRatingRange(rule.cat to matched)) +
-        allNotMatched.sumOf { notMatched ->
-          countAccepted(cur, workflows, partRange.updateRatingRange(rule.cat to notMatched))
-        }
+        countAccepted(cur, workflows, partRange.updateRatingRange(rule.cat to notMatched))
     }
     throw Exception("No rule in $cur matched $partRange")
   }
