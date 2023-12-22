@@ -32,6 +32,13 @@ object MathUtils {
   // Returns (a mod b), where a could be negative.
   fun takeMod(a: BigInteger, b: BigInteger): BigInteger = ((a % b) + b) % b
 
+  fun gcd(a: Long, b: Long): Long {
+    if (b == 0L) return a
+    return gcd(b, a % b)
+  }
+
+  fun lcm(a: Long, b: Long) = (a / gcd(a, b)) * b
+
   // returns (d, x, y) where d = ax + by and d = gcd(a, b)
   private fun extendedEuclid(
     inpA: BigInteger,
