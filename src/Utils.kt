@@ -22,6 +22,9 @@ enum class Direction(val delta: Pair<Int, Int>) {
       UP -> DOWN
       DOWN -> UP
     }
+
+  fun go(curPosition: Pair<Int, Int>) =
+    Pair(curPosition.first + delta.first, curPosition.second + delta.second)
 }
 
 // Fancy math.
